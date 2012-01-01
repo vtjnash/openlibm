@@ -21,6 +21,12 @@
 #include <machine/endian.h>
 #include <complex.h>
 
+#if __GNUC__ && !__GNUC_STDC_INLINE__
+#  define INLINE extern inline
+#else
+#  define INLINE inline
+#endif
+
 /*
  * The original fdlibm code used statements like:
  *	n0 = ((*(int*)&one)>>29)^1;		* index of high word *
@@ -270,7 +276,7 @@ typedef union {
  * In particular, I*Inf is corrupted to NaN+I*Inf, and I*-0 is corrupted
  * to -0.0+I*0.0.
  */
-static __inline float complex
+static inline float complex
 cpackf(float x, float y)
 {
 	float_complex z;
@@ -280,7 +286,7 @@ cpackf(float x, float y)
 	return (z.f);
 }
 
-static __inline double complex
+static inline double complex
 cpack(double x, double y)
 {
 	double_complex z;
@@ -290,7 +296,7 @@ cpack(double x, double y)
 	return (z.f);
 }
 
-static __inline long double complex
+static inline long double complex
 cpackl(long double x, long double y)
 {
 	long_double_complex z;
@@ -307,7 +313,7 @@ cpackl(long double x, long double y)
 /* Asm versions of some functions. */
 
 #ifdef __amd64__
-static __inline int
+static inline int
 irint(double x)
 {
 	int n;
@@ -319,7 +325,7 @@ irint(double x)
 #endif
 
 #ifdef __i386__
-static __inline int
+static inline int
 irint(double x)
 {
 	int n;
@@ -398,7 +404,7 @@ int	__kernel_rem_pio2(double*,double*,int,int,int);
 
 /* double precision kernel functions */
 #ifdef INLINE_REM_PIO2
-__inline
+INLINE
 #endif
 int	__ieee754_rem_pio2(double,double*);
 double	__kernel_sin(double,double,int);
@@ -411,19 +417,19 @@ double complex __ldexp_cexp(double complex,int);
 
 /* float precision kernel functions */
 #ifdef INLINE_REM_PIO2F
-__inline
+INLINE
 #endif
 int	__ieee754_rem_pio2f(float,double*);
 #ifdef INLINE_KERNEL_SINDF
-__inline
+INLINE
 #endif
 float	__kernel_sindf(double);
 #ifdef INLINE_KERNEL_COSDF
-__inline
+INLINE
 #endif
 float	__kernel_cosdf(double);
 #ifdef INLINE_KERNEL_TANDF
-__inline
+INLINE
 #endif
 float	__kernel_tandf(double,int);
 float	__ldexp_expf(float,int);
