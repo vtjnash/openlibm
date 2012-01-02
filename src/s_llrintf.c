@@ -1,4 +1,5 @@
 #include <sys/cdefs.h>
+#include <math.h>
 //__FBSDID("$FreeBSD: src/lib/msun/src/s_llrintf.c,v 1.1 2005/01/11 23:12:55 das Exp $");
 
 #define type		float
