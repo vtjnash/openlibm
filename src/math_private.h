@@ -18,7 +18,30 @@
 #define	_MATH_PRIVATE_H_
 
 #include <sys/types.h>
+
+#ifdef __APPLE__
 #include <machine/endian.h>
+#ifdef __arm__
+#if defined(__VFP_FP__)
+#define	IEEE_WORD_ORDER	BYTE_ORDER
+#else
+#define	IEEE_WORD_ORDER	BIG_ENDIAN
+#endif
+#else /* __arm__ */
+#define	IEEE_WORD_ORDER	BYTE_ORDER
+#endif
+#endif
+
+#ifdef __linux__
+#include <endian.h>
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+#define IEEE_WORD_ORDER LITTLE_ENDIAN
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+#define IEEE_WORD_ORDER BIG_ENDIAN
+#endif
+#endif
+
 #include <complex.h>
 
 #if __GNUC__ && !__GNUC_STDC_INLINE__
@@ -44,16 +67,6 @@
  * A union which permits us to convert between a double and two 32 bit
  * ints.
  */
-
-#ifdef __arm__
-#if defined(__VFP_FP__)
-#define	IEEE_WORD_ORDER	BYTE_ORDER
-#else
-#define	IEEE_WORD_ORDER	BIG_ENDIAN
-#endif
-#else /* __arm__ */
-#define	IEEE_WORD_ORDER	BYTE_ORDER
-#endif
 
 #if IEEE_WORD_ORDER == BIG_ENDIAN
 

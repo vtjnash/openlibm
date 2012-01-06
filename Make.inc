@@ -17,6 +17,7 @@ endif
 
 ifeq ($(OS), Darwin)
 SHLIB_EXT = dylib
+CFLAGS+=-std=c99
 endif
 
 # Colors for make
