@@ -10,7 +10,8 @@ clean:
 	rm -f *.o *~
 
 # OS-specific stuff
-
+OS = $(shell uname)
+ARCH = $(shell uname -m)
 
 ifeq ($(OS), MINGW32_NT-6.1)
 OS=WINNT
